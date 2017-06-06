@@ -15,8 +15,8 @@ public class HelloController {
 
     @RequestMapping("/hello")
     @ResponseBody
-    public String test() {
-        return helloService.sayHello("fred");
+    public String test(String value) {
+        return helloService.sayHello(value);
     }
 
 }
