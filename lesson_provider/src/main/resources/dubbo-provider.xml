@@ -2,12 +2,18 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
-       xsi:schemaLocation="http://www.springframework.org/schema/beanshttp://www.springframework.org/schema/beans/spring-beans.xsdhttp://code.alibabatech.com/schema/dubbohttp://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
 
-    <dubbo:application name="${dubbo.application}"/>
-    <dubbo:registry address="${dubbo.registry}"/>
+    <dubbo:application name="${dubbo.application.name}"/>
+    <dubbo:registry address="${dubbo.registry.address}"/>
     <dubbo:protocol name="${dubbo.protocol.name}" port="${dubbo.protocol.port}"/>
+    <dubbo:monitor protocol="${dubbo.monitor.protocol}"/>
+    <dubbo:consumer check="${dubbo.consumer.check}"/>
+    <dubbo:registry check="${dubbo.registry.check}" />
 
-    <dubbo:monitor protocol="${dubbo.monitor.protocol}" />
+    <dubbo:service interface="com.fred.lesson.api.HelloService" ref="helloServiceImpl"/>
 </beans>
