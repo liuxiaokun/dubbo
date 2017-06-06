@@ -1,5 +1,5 @@
 <html>
 <body>
-<h2>Hello Dubbo!</h2>
+<h2>Hello Provider!</h2>
 </body>
 </html>
