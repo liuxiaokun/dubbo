@@ -19,7 +19,7 @@ public class TopicListenerReceiver1 implements MessageListener {
         TextMessage tm = (TextMessage) message;
 
         try {
-            System.out.println("TopicListenerReceiver1 监听到了文本消息：\t"
+            System.out.println("lesson_provider TopicListenerReceiver1 监听到了文本消息：\t"
                     + tm.getText());
             //do something ...
         } catch (JMSException e) {

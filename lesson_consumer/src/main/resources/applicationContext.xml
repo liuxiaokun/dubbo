@@ -12,6 +12,7 @@
 
     <context:component-scan base-package="com.fred.lesson.consumer"/>
     <import resource="dubbo-consumer.xml"/>
+    <import resource="activemq.xml"/>
 
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">

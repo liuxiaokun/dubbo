@@ -1,4 +1,4 @@
-package com.fred.lesson.provider.consumer.queue.listener;
+package com.fred.lesson.consumer.consumer.topic.listener;
 
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import javax.jms.TextMessage;
  * Created by fred on 6/7/17.
  */
 @Service
-public class QueueListenerReceiver1 implements MessageListener {
+public class TopicListenerReceiver2 implements MessageListener {
 
     @Override
     public void onMessage(Message message) {
@@ -19,7 +19,7 @@ public class QueueListenerReceiver1 implements MessageListener {
         TextMessage tm = (TextMessage) message;
 
         try {
-            System.out.println("lesson_provider QueueMessageListener1 监听到了文本消息：\t"
+            System.out.println("lesson_consumer TopicListenerReceiver2 监听到了文本消息：\t"
                     + tm.getText());
             //do something ...
         } catch (JMSException e) {
