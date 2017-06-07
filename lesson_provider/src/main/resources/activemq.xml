@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.1.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+        http://www.springframework.org/schema/jms
+        http://www.springframework.org/schema/jms/spring-jms-4.1.xsd
+        http://activemq.apache.org/schema/core
+        http://activemq.apache.org/schema/core/activemq-core-5.12.1.xsd">
+
+
+    <!-- A connection to ActiveMQ -->
+    <bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory"
+          p:brokerURL="tcp://localhost:61616"/>
+
+    <!-- A cached connection to wrap the ActiveMQ connection -->
+    <bean id="cachedConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory"
+          p:targetConnectionFactory-ref="amqConnectionFactory" p:sessionCacheSize="10"/>
+
+
+    <!-- A destination in ActiveMQ -->
+    <bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="FOO.TEST"/>
+    </bean>
+
+    <!-- 定义JmsTemplate的Queue类型 -->
+    <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <constructor-arg ref="cachedConnectionFactory"/>
+        <!-- true是topic，false是queue，默认是false，此处显示写出false -->
+        <property name="pubSubDomain" value="false"/>
+    </bean>
+
+    <!-- 定义JmsTemplate的Topic类型 -->
+    <bean id="jmsTopicTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <constructor-arg ref="cachedConnectionFactory"/>
+        <property name="pubSubDomain" value="true"/>
+    </bean>
+    <!--Spring JmsTemplate 的消息生产者 end-->
+
+    <!-- 消息消费者 start-->
+    <!-- 显示注入消息监听容器（Queue），配置连接工厂，监听的目标是demoQueueDestination，监听器是上面定义的监听器 -->
+    <!-- The Spring message listener container configuration -->
+    <jms:listener-container container-type="default" connection-factory="cachedConnectionFactory"
+                            destination-type="queue" acknowledge="auto">
+        <jms:listener destination="test.queue" ref="queueListenerReceiver1" method="onMessage"/>
+        <jms:listener destination="test.queue" ref="queueListenerReceiver2" method="onMessage"/>
+    </jms:listener-container>
+
+    <!-- 定义Topic监听器 -->
+    <jms:listener-container destination-type="topic" container-type="default"
+                            connection-factory="cachedConnectionFactory" acknowledge="auto">
+        <jms:listener destination="test.topic" ref="topicListenerReceiver1" method="onMessage"/>
+        <jms:listener destination="test.topic" ref="topicListenerReceiver2" method="onMessage"/>
+    </jms:listener-container>
+
+    <!-- 消息消费者 end -->
+</beans>

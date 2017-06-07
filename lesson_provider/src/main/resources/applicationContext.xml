@@ -20,4 +20,6 @@
     </bean>
 
     <import resource="dubbo-provider.xml"/>
+    <import resource="activemq.xml"/>
+
 </beans>
